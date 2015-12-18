@@ -37,15 +37,26 @@ app.use(express.static(path.join(__dirname, 'public')));
 // 按照上面的解释，设置 session 的可选参数
 app.use(session({
   secret: 'recommand 128 bytes random string', // 建议使用 128 个字符的随机字符串
-  cookie: { maxAge: 60 * 1000 },
+  cookie: { maxAge: 60*60 * 1000 },
   resave: false,
   saveUninitialized: true,
-  store: new redisStore()
+  store: new redisStore({
+    "port": "6379",
+    "host": "127.0.0.1"
+  })
 }));
 
 app.use('/', routes);
 app.use('/users', users);
 app.use('/test',test);
+
+//session error
+app.use(function (req, res, next) {
+  if (!req.session) {
+    return next(new Error('oh no')) // handle error
+  }
+  next() // otherwise continue
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

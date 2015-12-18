@@ -35,7 +35,8 @@ router.get('/', function (req, res, next) {
     //    res.send(items);
         //res.render('index', items);
     //});
-    res.send("originUrl:"+res.originalUrl+"baseUrl:"+res.baseUrl);
+    req.session.test="this will be store in session!";
+    res.send(req.session.test);
 
 });
 
