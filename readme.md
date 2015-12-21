@@ -4,7 +4,7 @@ I will add some modules by degresss to study them.
 
 
 #feature
-- Express 
+- use Express 
 - use redis for Session
 - use sequelize for ORM 
 - use mysql
