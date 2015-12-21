@@ -9,6 +9,8 @@ var session = require('express-session');
 //使用redis托管session
 var redisStore = require('connect-redis')(session);
 
+var models = require('./models');
+
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var test = require('./routes/test');
@@ -89,8 +91,12 @@ app.use(function(err, req, res, next) {
   });
 });
 
-app.listen(3000, function () {
-  console.log('app is listen at port 3000');
+app.set('port', process.env.PORT || 3000);
+
+models.sequelize.sync().then(function () {
+  var server = app.listen(app.get('port'), function() {
+    console.log('Express server listening on port ' + server.address().port);
+  });
 });
 
 

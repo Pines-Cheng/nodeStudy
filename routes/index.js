@@ -3,6 +3,8 @@ var utility = require('utility');
 var superagent = require('superagent');
 var cheerio = require('cheerio');
 
+var models = require('../models');
+
 var router = express.Router();
 
 /* GET home page. */
@@ -33,18 +35,26 @@ router.get('/', function (req, res, next) {
     //        })
     //    });
     //    res.send(items);
-        //res.render('index', items);
+    //res.render('index', items);
     //});
-    req.session.test="this will be store in session!";
-    res.send(req.session.test);
+    //req.session.test="this will be store in session!";
+    //res.send(req.session.test);
+    //res.send("Express is Running...");
 
+    models['User']
+        .findAll().then(function (user) {
+        var items = user;
+        res.render('index',{items:user});
+        //res.send(items);
+    });
 });
+
 
 router.get('/session', function (req, res) {
 
     // 检查 session 中的 isVisit 字段
     // 如果存在则增加一次，否则为 session 设置 isVisit 字段，并初始化为 1。
-    if(req.session.isVisit) {
+    if (req.session.isVisit) {
         req.session.isVisit++;
         res.send('<p>第 ' + req.session.isVisit + '次来此页面</p>');
     } else {
@@ -55,5 +65,19 @@ router.get('/session', function (req, res) {
     }
 });
 
+router.get('/save', function (req, res) {
+    //console.dir(models['User']);
+    models['User']
+        .create({
+        username: 'janedoe',
+        password: '78945354'
+    }).then(function (jane) {
+        console.log(jane.get({
+            plain: true
+        }));
+    });
+
+    res.send('save user spider success!');
+});
 
 module.exports = router;
