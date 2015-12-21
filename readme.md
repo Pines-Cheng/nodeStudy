@@ -10,7 +10,7 @@ I will add some modules by degresss to study them.
 - use mysql
 
 #add log
-##12.21
+## 12.21
  add sequelize
  
  ```
